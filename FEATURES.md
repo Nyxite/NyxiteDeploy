@@ -9,6 +9,7 @@ Self-hosting: container stack, reverse proxy, DNS, VPN, and provisioning. Gradua
 - Cloudflare configuration (proxy, Universal SSL for public users, Origin CA internally)
 - bind9 internal DNS configuration
 - WireGuard VPN configuration (admin-only access)
+- Hosting the `NyxiteAdmin` operator dashboard (Next.js SSR) as its own container, bound to the WireGuard interface only (admin-only)
 - Hetzner VPS (ARM64) provisioning
 - Origin CA root certificate installation notes for admin devices (Linux NSS via certutil, Windows certlm.msc, Android Settings -> Security)
 
