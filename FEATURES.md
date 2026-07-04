@@ -4,7 +4,7 @@ Self-hosting: container stack, reverse proxy, DNS, VPN, and provisioning. Gradua
 
 ## Contents
 
-- docker-compose for the full stack (server, PostgreSQL, Keycloak, blob store)
+- docker-compose for the default stack (server, PostgreSQL, blob store) behind nginx; **Keycloak is an optional `enterprise` compose profile**, not part of the default (native auth is the default — #9)
 - nginx reverse proxy configuration
 - Cloudflare configuration (proxy, Universal SSL for public users, Origin CA internally)
 - bind9 internal DNS configuration
@@ -17,6 +17,6 @@ Self-hosting: container stack, reverse proxy, DNS, VPN, and provisioning. Gradua
 
 See [../docs/OPEN-DECISIONS.md](../docs/OPEN-DECISIONS.md). Deploy-specific:
 
-- Server-side secret injection (Keycloak client secret, DB credentials). Note: under full E2EE there is **no server-held content KEK** — content keys live on clients.
-- Backup strategy for the database and blob store (both ciphertext-only; useless without a member's key). The critical secret is each user's recovery key, held by users, not the operator — server DR cannot recover content if users lose their keys.
-- Single self-contained binary vs container as the primary deployment target
+- Server-side secret injection (DB credentials; the native-auth signing key for the server's own tokens; the Keycloak client secret **only when the enterprise profile is enabled**). Note: under full E2EE there is **no server-held content KEK** — content keys live on clients.
+- Backup strategy for the database and blob store (both ciphertext-only; useless without a member's key). The critical secret is each user's recovery phrase, held by users, not the operator — server DR cannot recover content if users lose their keys (the client-encrypted recovery blob on the server is unreadable without that phrase).
+- Deployment target — **resolved**: the Docker Compose container stack is the primary self-hosting artifact; a single self-contained binary is not a v1 target
