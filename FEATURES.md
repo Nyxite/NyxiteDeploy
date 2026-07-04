@@ -17,6 +17,6 @@ Self-hosting: container stack, reverse proxy, DNS, VPN, and provisioning. Gradua
 
 See [../docs/OPEN-DECISIONS.md](../docs/OPEN-DECISIONS.md). Deploy-specific:
 
-- Server-side secret injection (DB credentials; the native-auth signing key for the server's own tokens; the Keycloak client secret **only when the enterprise profile is enabled**). Note: under full E2EE there is **no server-held content KEK** — content keys live on clients.
+- Server-side secret injection (DB credentials; the native-auth signing key for the server's own tokens; the Keycloak client secret **only when the enterprise profile is enabled**). Note: under full E2EE there is **no server-held content KEK** — content keys live on clients. **Enterprise/family groups add no new server-held secret** — group keys are client-held ([features/groups.md](groups.md)); the only group-related server config is the **instance-wide `group_max_members` default** (the group-size limit, overridable per group from the admin dashboard).
 - Backup strategy for the database and blob store (both ciphertext-only; useless without a member's key). The critical secret is each user's recovery phrase, held by users, not the operator — server DR cannot recover content if users lose their keys (the client-encrypted recovery blob on the server is unreadable without that phrase).
 - Deployment target — **resolved**: the Docker Compose container stack is the primary self-hosting artifact; a single self-contained binary is not a v1 target
